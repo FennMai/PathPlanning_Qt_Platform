@@ -33,6 +33,7 @@ file(GLOB_RECURSE utils_file_hpp "${PROJECT_SOURCE_DIR}/include/utils/*.h")
 # Setting
 set(PROJECT_SOURCES
         src/main.cpp
+        src/qt/pathplanning_platform.ui
         ${qt_file_cpp}
         ${qt_file_hpp}
         ${algorithm_file_cpp}
@@ -69,6 +70,7 @@ endif()
 include_directories(${PROJECT_SOURCE_DIR}/include/qt)
 include_directories(${PROJECT_SOURCE_DIR}/include/algorithm)
 # cpp
+include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/src/qt)
 include_directories(${PROJECT_SOURCE_DIR}/src/algorithm)
 # qcustomplot
