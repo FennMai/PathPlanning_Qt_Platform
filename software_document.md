@@ -65,13 +65,13 @@ rt_location.x = 0;
 **solution:**
 1. 提炼记录每个版本的开发内容。
 2. 录屏--->转换成gif--->保存到markdown中
+   
 e.g.
 ![alt text](assets/README/output.gif)
+
+terminal:
 ```
-terminal
-
 ffmpeg -i "xxxname.webm" -filter_complex "[0:v] fps=15,scale=640:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse" output.gif
-
 ```
 
 
