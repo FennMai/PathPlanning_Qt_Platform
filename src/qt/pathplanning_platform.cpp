@@ -4,7 +4,9 @@
 * 1.basic qt window
 * 2.reconstruct the project
 *
-*
+** basic 1.0, date:07/05/2024:
+* 1.basic qt window
+* 2.reconstruct the project
 **/
 
 #include "pathplanning_platform.h"
@@ -80,7 +82,7 @@ void PathPlanning_Platform::Realtime_Plot(){
     rt_location.x +=0.1;
 
     // 当完成所有点的绘制后，自动停下
-    if (rt_location.x>3){
+    if (rt_location.x>6){
         Printing_Timer->stop();
         ui->output_txt->setText("stopping plotting");
     }
@@ -93,7 +95,7 @@ void PathPlanning_Platform::on_Plotting_clicked()
 {
     rt_location.x = 0;
     ui->output_txt->setText("starting plotting");
-    Printing_Timer->start(500);// 1000ms
+    Printing_Timer->start(50);// 1000ms
 }
 
 /**********************
