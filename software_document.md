@@ -1,13 +1,29 @@
 ## 1. 2D Plot
+#### 20240508 goal and finished
+
 source: `qcustomplot`
 1. initial_gragh---`Initialize_Plot`
 2. live plotting(sinx)--- ``
 3. define the shape of gragh from input button
-4. deinfe the obstacles generator
 
 `Plotting`button clicked---`Printing_Timer`start---`Realtime_Plot` start 
 
 `clear all`button clicked---`Printing_Timer`stop---`MapPlot`clear
+
+#### 20240509 goal
+1. define the obstacles generator
+step 1: Define two obs modes, a. Custom input obstacles; b. Randomly generated
+**a.** custom input obstacles ui flow: 
+"ask obs nums:xx" --> define a empty table([nums,3])
+
+
+1. design real-time APF
+
+
+#### 20240516 finished
+1. **a.** custom input obstacles ui flow: 
+"ask obs nums:xx" --> push button `Obs_Input`, define a empty table([nums,3])--> write down the obs info -->  push button `Obs_Info_get`, store the data in the vector `obs_info`, plot the Ellipse in `MapPlot`
+
 
 ## 2. debug
 
@@ -67,6 +83,8 @@ rt_location.x = 0;
 2. 录屏--->转换成gif--->保存到markdown中
    
 e.g.
+Now:sinx , x (0.6)
+
 ![alt text](assets/README/output.gif)
 
 terminal:

@@ -11,6 +11,8 @@ Original intention: Build a Qt platform/exe for path planning algorithms
 | Version | Result display |
 |---------|----------------|
 | 1.1 | ![alt text](assets/README/output.gif)|
-|     | Complete the basic real-time display framework construction|
+|     | Complete the basic real-time display framework construction. Now:sinx , x (0.6)|
+| 1.2 | ![alt text](assets/README/output1.2.gif)|
+|     | Complete the the obstacles generator 
 
 
