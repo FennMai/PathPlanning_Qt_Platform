@@ -85,11 +85,14 @@ rt_location.x = 0;
 e.g.
 Now:sinx , x (0.6)
 
-![alt text](assets/README/output.gif)
+![alt text](assets/README/version1.1.gif)
 
 terminal:
 ```
-ffmpeg -i "xxxname.webm" -filter_complex "[0:v] fps=15,scale=640:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse" output.gif
+ffmpeg -i "xxxname.webm" -filter_complex "[0:v] fps=15,scale=800:-1:flags=lanczos,split [a][b];[a] palettegen [p];[b][p] paletteuse" output.gif
 ```
+If the image quality is too low, change the scale.
+e.g. scale=1024...
+
 
 
