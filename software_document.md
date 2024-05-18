@@ -52,7 +52,8 @@ setting step2:
 ![alt text](assets/software_document/image-3.png)
 
 #### 20240518
-1.feat: obstacles generators mode 2 - Random Generator
+1. feat: Adjust map size in real time
+2. feat: obstacles generators mode 2 - Random Generator
 ![alt text](assets/software_document/pathplanning.drawio.png)
 
 ## 2. debug

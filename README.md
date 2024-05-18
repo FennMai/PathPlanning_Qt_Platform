@@ -14,6 +14,10 @@ Original intention: Build a Qt platform/exe for path planning algorithms
 |     | Complete the basic real-time display framework construction. Now:sinx , x belongs to (0,6)|
 | 1.2 | ![alt text](assets/README/version1.2.gif)|
 |     | Complete the the obstacles generator -- mode 1: custom input obstacles|
+|1.2.2| ![alt text](assets/README/version1.2.2.gif)|
+|     |1. feat: Adjust map size in real time;<br>2. feat: obstacles generators mode 2 - Random Generator|
+
+
 
 ## [Software development detail](software_document.md)
 
