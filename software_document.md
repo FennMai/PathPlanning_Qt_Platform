@@ -50,7 +50,11 @@ setting step1:
 ![alt text](assets/software_document/image-2.png)
 setting step2:
 ![alt text](assets/software_document/image-3.png)
-2. 
+
+#### 20240518
+1.feat: obstacles generators mode 2 - Random Generator
+![alt text](assets/software_document/pathplanning.drawio.png)
+
 ## 2. debug
 
 1. 20240508 

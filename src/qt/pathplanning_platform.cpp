@@ -11,13 +11,19 @@
 * 3.define a simple sinx graph
 * 4.debug the real-time plotting
 *
-*********************************
-* now:
 * @version   1.2
 * @author    Fennmai
 * @date      16/05/2024
 * @brief
 * 1. obstacles generators mode1 - custom input obstacles
+*
+*********************************
+* now:
+* @version   1.2.2
+* @author    Fennmai
+* @date      18/05/2024
+* @brief
+* 1.feat: obstacles generators mode 2 - Random Generator
 *
 ********************************/
 
@@ -337,9 +343,9 @@ void PathPlanning_Platform::on_ObsRndGen_clicked()
     // 获取最新的 MapWeight 和 MapHeight 值
     const double mapWidth = ui->MapWeight->text().toDouble();
     const double mapHeight = ui->MapHeight->text().toDouble();
-    const double minDistance = 0.2; // 最小距离，确保障碍物不重叠
+    const double minDistance = 0.5; // 最小距离，确保障碍物不重叠
     const double minSize = 0.2;
-    const double maxSize = 3;
+    const double maxSize = 1.5;
 
     QRandomGenerator *generator = QRandomGenerator::global();
     QVector<QRectF> generatedObstacles;
@@ -353,24 +359,29 @@ void PathPlanning_Platform::on_ObsRndGen_clicked()
         while (!validPosition)
         {
             // validPosition = false，则会一直在这里循环，指导找到满足条件的obs
-            obs_x = generator->bounded(mapWidth);
-            obs_y = generator->bounded(mapHeight);
-            obs_size = minSize + generator->bounded(maxSize-minSize);
+//            obs_x = generator->bounded(mapWidth);
+//            obs_y = generator->bounded(mapHeight);
+            obs_size = minSize + generator->bounded(maxSize - minSize);
+            obs_x = generator->bounded(mapWidth - obs_size) + obs_size / 2;
+            obs_y = generator->bounded(mapHeight - obs_size) + obs_size / 2;
 
-            QRectF newObstacle(obs_x - obs_size / 2, obs_y - obs_size / 2, obs_size, obs_size);
+
+            newObstacle = QRectF(obs_x - obs_size / 2, obs_y - obs_size / 2, obs_size, obs_size);
 
             validPosition = true;
+
+            // 检查障碍物是否在地图边界内
+            if (newObstacle.left() < 0 || newObstacle.top() < 0 || newObstacle.right() > mapWidth || newObstacle.bottom() > mapHeight)
+            {
+                validPosition = false;
+                continue;
+            }
+
+            // 检查障碍物是否与其他障碍物有足够的距离
             for (const QRectF &obstacle : generatedObstacles)
             {
-                // 检查新障碍物是否与其他障碍物有足够的距离
                 if (newObstacle.intersects(obstacle.adjusted(-minDistance, -minDistance, minDistance, minDistance)))
                 {
-                    validPosition = false;
-                    break;
-                }
-                // 如果障碍物位置有效，检查是否在地图边界内
-                if (newObstacle.x() <0 || newObstacle.y() <0 || newObstacle.right() >mapWidth || newObstacle.bottom()>mapHeight){
-
                     validPosition = false;
                     break;
                 }
@@ -387,7 +398,12 @@ void PathPlanning_Platform::on_ObsRndGen_clicked()
         ui->obs_input_table->setItem(i, 0, itemX);
         ui->obs_input_table->setItem(i, 1, itemY);
         ui->obs_input_table->setItem(i, 2, itemSize);
-    }
 
-    ui->output_txt->setText(QString("Generated %1 obstacles").arg(obs_nums));
+        // 输出每个生成的障碍物信息
+        ui->output_txt->append(QString("Generated obstacle %1 at (x: %2, y: %3, size: %4)")
+            .arg(i + 1)
+            .arg(obs_x)
+            .arg(obs_y)
+            .arg(obs_size));
+    }
 }

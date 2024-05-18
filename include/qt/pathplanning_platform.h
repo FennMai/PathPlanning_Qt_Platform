@@ -11,16 +11,22 @@
 * 3.define a simple sinx graph
 * 4.debug the real-time plotting
 *
-*********************************
-* now:
 * @version   1.2
 * @author    Fennmai
 * @date      16/05/2024
 * @brief
-* 1. obstacles generators
-* 2.
+* 1. obstacles generators mode1 - custom input obstacles
+*
+*********************************
+* now:
+* @version   1.2.2
+* @author    Fennmai
+* @date      18/05/2024
+* @brief
+* 1.feat: obstacles generators mode 2 - Random Generator
 *
 ********************************/
+
 
 #ifndef PATHPLANNING_PLATFORM_H
 #define PATHPLANNING_PLATFORM_H
