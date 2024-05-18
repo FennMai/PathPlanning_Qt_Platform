@@ -24,6 +24,7 @@
 #include "pathplanning_platform.h"
 #include "./ui_pathplanning_platform.h"
 #include <cmath>
+#include <QRandomGenerator>
 
 PathPlanning_Platform::PathPlanning_Platform(QWidget *parent)
     : QMainWindow(parent)
@@ -34,8 +35,10 @@ PathPlanning_Platform::PathPlanning_Platform(QWidget *parent)
     /***** qcustomplot structure *****/
     MapPlot = new QCustomPlot();
     ui->QT_MapPlot->addWidget(MapPlot);
-
     Initialize_Plot();
+
+    connect(ui->MapWeight, &QLineEdit::textChanged, this, &PathPlanning_Platform::UdMapWight);
+    connect(ui->MapHeight, &QLineEdit::textChanged, this, &PathPlanning_Platform::UdMapHight);
 
     /***** Timer *****/
     // 定义一个定时器，作为客观的实时绘图的工具
@@ -57,12 +60,24 @@ PathPlanning_Platform::~PathPlanning_Platform()
 **********************/
 void PathPlanning_Platform::Initialize_Plot() {
     // 设置 MapPlot 的显示范围，定义了图形的视觉边界
-    MapPlot->xAxis->setRange(0, 10);  // X轴显示范围从-0.1到10
-    MapPlot->yAxis->setRange(0, 10);   // Y轴显示范围从-1到2.5
+    // inital value
+    MapWeight = 10.0;
+    MapHeight = 10.0;
+    MapPlot->xAxis->setRange(0, MapWeight);  // 0轴显示范围从-1到MapWeight
+    MapPlot->yAxis->setRange(0, MapHeight);   // 0轴显示范围从-1到MapHeight
 
     // 下面的代码用于配置轴标题，暂时被注释
-     MapPlot->xAxis->setLabel("X Axis / m ");
-     MapPlot->yAxis->setLabel("Y Axis / m ");
+    MapPlot->xAxis->setLabel("X Axis / m ");
+    MapPlot->yAxis->setLabel("Y Axis / m ");
+
+    // setting the detials
+    QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
+    fixedTicker->setTickStep(1.0); // 设置主刻度间隔
+    MapPlot->yAxis->setTicker(fixedTicker);
+    MapPlot->xAxis->setTicker(fixedTicker);
+    //MapPlot->xAxis->setTickLabelRotation(45); // 设置刻度标签旋转角度
+     MapPlot->yAxis->setTickLabelFont(QFont("Arial", 10));
+    MapPlot->xAxis->setTickLabelFont(QFont("Arial", 10)); // 设置刻度标签字体
 
     // 创建一个新图形用于绘制动态数据
     MapPlot->addGraph();
@@ -156,7 +171,7 @@ void PathPlanning_Platform::on_obs_data_get_clicked()
 }
 /*************************************************
 **Function: Obstacles info input getting
-**Description: 函数功能描述
+**Description:
 **Input: Obs_Info_get -- button clicked
 **obs_nums -- obstacles numbers -- from on_obs_data_get_clicked()
 **Output: obs_info -- all obstacles infos in global
@@ -167,7 +182,10 @@ void PathPlanning_Platform::on_Obs_Info_get_clicked()
 {
     // clean the data in vector before
     obs_info.clear();
+    // obs 数据获取方式
+    // mode1： 外部输入
     PasteFromClipboard();
+    // mode2： 随机生成
 
     for(int row=0;row < obs_nums; ++row){
         // getting the each row info
@@ -252,4 +270,124 @@ void PathPlanning_Platform::Obs_Plot(double obs_x, double obs_y, double obs_size
 
 void PathPlanning_Platform::Obs_Plot_Format(){
 
+}
+
+/*************************************************
+** Function: UdMapWight
+** Description: Slot function to handle changes in the MapWeight QLineEdit widget.
+**              It updates the horizontal range of the plot to match the new map width.
+** Input: const QString &text - The new text entered by the user in the QLineEdit.
+** Output: None
+** Return: None
+** Others: Converts the text to a float representing the map width. If the conversion is
+**         successful, it updates the horizontal range of the plot's xAxis. The plot is then
+**         replotted to reflect the changes. If the conversion fails, it indicates an invalid
+**         input.
+*************************************************/
+void PathPlanning_Platform::UdMapWight(const QString &text)
+{
+    bool ok;
+    float value = text.toFloat(&ok);
+    if (ok) {
+        // Successfully converted text to float, indicating a valid map width
+        // Update the horizontal range of the plot's xAxis to the new map width
+        MapPlot->xAxis->setRange(0, value);
+        // Repaint the plot with the updated range
+        MapPlot->replot();
+    } else {
+        // Conversion failed, handle invalid input (e.g., display an error message)
+        // ui->output_txt->setText("Invalid input for MapWeight"); // Uncomment to show error
+    }
+}
+
+/*************************************************
+** Function: UdMapHight
+** Description: Slot function to handle changes in the MapHeight QLineEdit widget.
+**              It updates the vertical range of the plot to match the new map height.
+** Input: const QString &text - The new text entered by the user in the QLineEdit.
+** Output: None
+** Return: None
+** Others: Converts the text to a float representing the map height. If the conversion is
+**         successful, it updates the vertical range of the plot's yAxis. The plot is then
+**         replotted to reflect the changes. If the conversion fails, it indicates an invalid
+**         input.
+*************************************************/
+void PathPlanning_Platform::UdMapHight(const QString &text)
+{
+    bool ok;
+    float value = text.toFloat(&ok);
+    if (ok) {
+        // Successfully converted text to float, indicating a valid map height
+        // Update the vertical range of the plot's yAxis to the new map height
+        MapPlot->yAxis->setRange(0, value);
+        // Repaint the plot with the updated range
+        MapPlot->replot();
+    } else {
+        // Conversion failed, handle invalid input (e.g., display an error message)
+        // ui->output_txt->setText("Invalid input for MapHeight"); // Uncomment to show error
+    }
+}
+
+void PathPlanning_Platform::on_ObsRndGen_clicked()
+{
+    obs_info.clear();
+    ui->obs_input_table->clearContents();
+    ui->obs_input_table->setRowCount(obs_nums);
+
+    // 获取最新的 MapWeight 和 MapHeight 值
+    const double mapWidth = ui->MapWeight->text().toDouble();
+    const double mapHeight = ui->MapHeight->text().toDouble();
+    const double minDistance = 0.2; // 最小距离，确保障碍物不重叠
+    const double minSize = 0.2;
+    const double maxSize = 3;
+
+    QRandomGenerator *generator = QRandomGenerator::global();
+    QVector<QRectF> generatedObstacles;
+
+    for (int i = 0; i < obs_nums; ++i)
+    {
+        double obs_x, obs_y, obs_size;
+        bool validPosition = false;
+        QRectF newObstacle; // 声明变量在外部作用域
+
+        while (!validPosition)
+        {
+            // validPosition = false，则会一直在这里循环，指导找到满足条件的obs
+            obs_x = generator->bounded(mapWidth);
+            obs_y = generator->bounded(mapHeight);
+            obs_size = minSize + generator->bounded(maxSize-minSize);
+
+            QRectF newObstacle(obs_x - obs_size / 2, obs_y - obs_size / 2, obs_size, obs_size);
+
+            validPosition = true;
+            for (const QRectF &obstacle : generatedObstacles)
+            {
+                // 检查新障碍物是否与其他障碍物有足够的距离
+                if (newObstacle.intersects(obstacle.adjusted(-minDistance, -minDistance, minDistance, minDistance)))
+                {
+                    validPosition = false;
+                    break;
+                }
+                // 如果障碍物位置有效，检查是否在地图边界内
+                if (newObstacle.x() <0 || newObstacle.y() <0 || newObstacle.right() >mapWidth || newObstacle.bottom()>mapHeight){
+
+                    validPosition = false;
+                    break;
+                }
+            }
+        }
+
+        generatedObstacles.append(newObstacle);
+        obs_info.push_back({obs_x, obs_y, obs_size});
+
+        QTableWidgetItem *itemX = new QTableWidgetItem(QString::number(obs_x));
+        QTableWidgetItem *itemY = new QTableWidgetItem(QString::number(obs_y));
+        QTableWidgetItem *itemSize = new QTableWidgetItem(QString::number(obs_size));
+
+        ui->obs_input_table->setItem(i, 0, itemX);
+        ui->obs_input_table->setItem(i, 1, itemY);
+        ui->obs_input_table->setItem(i, 2, itemSize);
+    }
+
+    ui->output_txt->setText(QString("Generated %1 obstacles").arg(obs_nums));
 }

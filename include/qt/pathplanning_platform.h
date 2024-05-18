@@ -28,7 +28,7 @@
 #include <QMainWindow>
 #include<QTimer>
 #include<vector>
-
+#include <QRandomGenerator>
 #include <QClipboard>
 #include <QApplication>
 
@@ -69,8 +69,11 @@ public:
     /***** Vector *****/
     std::vector<Obstacle_info>obs_info;
     std::vector<double>obs_apf_rep_f; //对障碍物 --> APF --> 斥力
-    int obs_nums; // 障碍物数量
 
+    /***** Variables *****/
+    int obs_nums; // 障碍物数量
+    float MapWeight; // 地图的长度
+    float MapHeight; // 地图的宽度
 
 private slots:
     void on_Plotting_clicked();
@@ -80,6 +83,12 @@ private slots:
     void on_obs_data_get_clicked();
 
     void on_Obs_Info_get_clicked();
+
+    void UdMapWight(const QString &text);
+
+    void UdMapHight(const QString &text);
+
+    void on_ObsRndGen_clicked();
 
 private:
     Ui::PathPlanning_Platform *ui;

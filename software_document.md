@@ -1,4 +1,4 @@
-## 1. 2D Plot
+## 1. Diary
 #### 20240508 goal and finished
 
 source: `qcustomplot`
@@ -19,12 +19,38 @@ step 1: Define two obs modes, a. Custom input obstacles; b. Randomly generated
 
 1. design real-time APF
 
-
 #### 20240516 finished
 1. **a.** custom input obstacles ui flow: 
 "ask obs nums:xx" --> push button `Obs_Input`, define a empty table([nums,3])--> write down the obs info -->  push button `Obs_Info_get`, store the data in the vector `obs_info`, plot the Ellipse in `MapPlot`
 
+#### 20240516
+1. from 20240515, the project Project code standards tend to be Oxygen format specifications.
+However, Oxygen adapted for Qt Creator has not been updated for many years. So I learned from online tutorials and customized two formats
+```
+header version notes:
+* @version   1.2
+* @author    Fennmai
+* @date      16/05/2024
+* @brief
+* 1. 
+* 2.
+* 3.
 
+cpp function notes:
+/*************************************************
+**Function: 
+**Description: 
+**Input: 
+**Output: 
+**Return: 
+**Others: 
+*************************************************/
+```
+setting step1:
+![alt text](assets/software_document/image-2.png)
+setting step2:
+![alt text](assets/software_document/image-3.png)
+2. 
 ## 2. debug
 
 1. 20240508 

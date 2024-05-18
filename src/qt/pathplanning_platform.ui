@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1337</width>
-    <height>822</height>
+    <width>1316</width>
+    <height>808</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>181</width>
+      <width>141</width>
       <height>51</height>
      </rect>
     </property>
@@ -39,14 +39,14 @@
      </font>
     </property>
     <property name="text">
-     <string>Plotting </string>
+     <string>Map Plotting </string>
     </property>
    </widget>
    <widget class="QPushButton" name="Plotting">
     <property name="geometry">
      <rect>
-      <x>1040</x>
-      <y>580</y>
+      <x>990</x>
+      <y>520</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -67,9 +67,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>70</y>
+      <y>60</y>
       <width>941</width>
-      <height>441</height>
+      <height>451</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="QT_MapPlot"/>
@@ -77,8 +77,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>1040</x>
-      <y>760</y>
+      <x>950</x>
+      <y>720</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -98,8 +98,8 @@
    <widget class="QPushButton" name="Plotting_Clear">
     <property name="geometry">
      <rect>
-      <x>1040</x>
-      <y>651</y>
+      <x>990</x>
+      <y>580</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -122,8 +122,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>580</y>
+      <x>650</x>
+      <y>530</y>
       <width>321</width>
       <height>171</height>
      </rect>
@@ -158,10 +158,10 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>430</x>
       <y>530</y>
       <width>211</width>
-      <height>61</height>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -206,9 +206,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>580</y>
+      <y>530</y>
       <width>401</width>
-      <height>191</height>
+      <height>211</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -252,10 +252,10 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>600</y>
-      <width>117</width>
-      <height>41</height>
+      <x>430</x>
+      <y>580</y>
+      <width>131</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="font">
@@ -267,7 +267,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Obs_Input</string>
+     <string>Input Edit</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Obs_Info_get">
@@ -276,10 +276,10 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>660</y>
-      <width>117</width>
-      <height>41</height>
+      <x>430</x>
+      <y>620</y>
+      <width>131</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="font">
@@ -294,8 +294,117 @@
      <number>1</number>
     </property>
     <property name="text">
-     <string>Obs_Info_get</string>
+     <string>Obs Info Get</string>
     </property>
+   </widget>
+   <widget class="QPushButton" name="ObsRndGen">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>660</y>
+      <width>131</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>13</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="toolTipDuration">
+     <number>1</number>
+    </property>
+    <property name="text">
+     <string>Obs  Generator</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>20</y>
+      <width>171</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="leftMargin">
+      <number>7</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Height： </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="MapHeight">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>20</y>
+      <width>171</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="leftMargin">
+      <number>7</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Weight： </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="MapWeight">
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -303,7 +412,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1337</width>
+     <width>1316</width>
      <height>22</height>
     </rect>
    </property>
