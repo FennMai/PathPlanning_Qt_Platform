@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1316</width>
+    <width>1192</width>
     <height>808</height>
    </rect>
   </property>
@@ -207,7 +207,7 @@
      <rect>
       <x>10</x>
       <y>530</y>
-      <width>401</width>
+      <width>400</width>
       <height>211</height>
      </rect>
     </property>
@@ -246,7 +246,7 @@
      <bool>false</bool>
     </attribute>
    </widget>
-   <widget class="QPushButton" name="obs_data_get">
+   <widget class="QPushButton" name="obs_nums_get">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -265,6 +265,12 @@
       <italic>false</italic>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::TabFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::NoContextMenu</enum>
     </property>
     <property name="text">
      <string>Input Edit</string>
@@ -297,7 +303,7 @@
      <string>Obs Info Get</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="ObsRndGen">
+   <widget class="QPushButton" name="Obs_RndGen">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -365,7 +371,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -412,7 +418,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1316</width>
+     <width>1192</width>
      <height>22</height>
     </rect>
    </property>

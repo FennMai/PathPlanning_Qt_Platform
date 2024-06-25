@@ -78,7 +78,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets PrintSupport REQUIRED)
 target_link_libraries(PathPlanning_Platform PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::PrintSupport)
 
 
-target_link_libraries(PathPlanning_Platform PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+#target_link_libraries(PathPlanning_Platform PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 set_target_properties(PathPlanning_Platform PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

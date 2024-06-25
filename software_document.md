@@ -56,6 +56,13 @@ setting step2:
 2. feat: obstacles generators mode 2 - Random Generator
 ![alt text](assets/software_document/pathplanning.drawio.png)
 
+#### 20240623
+1. 想到了一个问题，我的UI是用QT Designer 进行编辑的，但是时间久了，就容易忘记button的命名和对应在代码里面的触发功能。所以应该开一个新的文档，对当前的UI功能名字，对应当前的函数等等进行解释。
+或者，使用Oxygen来进行自动化文档管理
+- [ ] 上述问题
+2. on_Obs_RndGen_clicked()经过检查和思考后，决定需要重构
+
+
 ## 2. debug
 
 1. 20240508 

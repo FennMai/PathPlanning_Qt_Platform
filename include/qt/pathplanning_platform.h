@@ -30,15 +30,17 @@
 
 #ifndef PATHPLANNING_PLATFORM_H
 #define PATHPLANNING_PLATFORM_H
-
+#include <iostream>
 #include <QMainWindow>
-#include<QTimer>
-#include<vector>
+#include <QTimer>
+#include <vector>
 #include <QRandomGenerator>
 #include <QClipboard>
 #include <QApplication>
 
-#include"qcustomplot.h"
+#include "qcustomplot.h"
+
+using namespace std;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class PathPlanning_Platform; }
@@ -86,15 +88,15 @@ private slots:
 
     void on_Plotting_Clear_clicked();
 
-    void on_obs_data_get_clicked();
+    void on_obs_nums_get_clicked();
 
     void on_Obs_Info_get_clicked();
 
+    // auto change the MapPlot structure
     void UdMapWight(const QString &text);
-
     void UdMapHight(const QString &text);
 
-    void on_ObsRndGen_clicked();
+    void on_Obs_RndGen_clicked();
 
 private:
     Ui::PathPlanning_Platform *ui;

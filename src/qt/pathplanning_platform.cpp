@@ -1,4 +1,4 @@
-/********************************
+ /********************************
 * history:
 *
 * basic 1.0, date:07/05/2024:
@@ -41,8 +41,10 @@ PathPlanning_Platform::PathPlanning_Platform(QWidget *parent)
     /***** qcustomplot structure *****/
     MapPlot = new QCustomPlot();
     ui->QT_MapPlot->addWidget(MapPlot);
+    //初始化MapPlot的显示内容
     Initialize_Plot();
-
+    //连接两个ui输入框MapWeight,MapHeight，当检测到输入框内容被更改，
+    //就会连接到UdMapWight/UdMapHight函数，对UI上的MapPlot的横纵坐标进行更改
     connect(ui->MapWeight, &QLineEdit::textChanged, this, &PathPlanning_Platform::UdMapWight);
     connect(ui->MapHeight, &QLineEdit::textChanged, this, &PathPlanning_Platform::UdMapHight);
 
@@ -116,14 +118,14 @@ void PathPlanning_Platform::Initialize_Plot() {
 void PathPlanning_Platform::Realtime_Plot(){
     // 数据导入
     rt_location.y =sin(rt_location.x);
-    // 数据格式判断
+    // 数据格式判断，20240623，此处应该是规划在数据导入前做个检查
 
     // 数据使用-->绘图
     MapPlot->graph(0)->addData(rt_location.x, rt_location.y);
     MapPlot->graph(0)->rescaleAxes(true); //自动调整图表的轴范围以适应所有绘制的数据点。
     MapPlot->replot(); // 将新加入的点，绘制到graph(0)里
 
-    rt_location.x +=0.1;
+    rt_location.x +=0.1; // ？？？
 
     // 检测是否完成-->当完成所有点的绘制后，自动停下
     if (rt_location.x>6){
@@ -157,7 +159,76 @@ void PathPlanning_Platform::on_Plotting_Clear_clicked()
 /**********************
 ** Obstacles info input**
 **********************/
-void PathPlanning_Platform::on_obs_data_get_clicked()
+/*************************************************
+** Function: UdMapWight
+** Description: Slot function to handle changes in the MapWeight QLineEdit widget.
+**              It updates the horizontal range of the plot to match the new map width.
+** Input: const QString &text - The new text entered by the user in the QLineEdit.
+** Output: None
+** Return: None
+** Others: Converts the text to a float representing the map width. If the conversion is
+**         successful, it updates the horizontal range of the plot's xAxis. The plot is then
+**         replotted to reflect the changes. If the conversion fails, it indicates an invalid
+**         input.
+*************************************************/
+void PathPlanning_Platform::UdMapWight(const QString &text)
+{
+    bool ok;
+    float value = text.toFloat(&ok);
+    if (ok) {
+        // Successfully converted text to float, indicating a valid map width
+        // Update the horizontal range of the plot's xAxis to the new map width
+        MapPlot->xAxis->setRange(0, value);
+        // Repaint the plot with the updated range
+        MapPlot->replot();
+    } else {
+        // Conversion failed, handle invalid input (e.g., display an error message)
+        // ui->output_txt->setText("Invalid input for MapWeight"); // Uncomment to show error
+    }
+}
+
+/*************************************************
+** Function: UdMapHight
+** Description: Slot function to handle changes in the MapHeight QLineEdit widget.
+**              It updates the vertical range of the plot to match the new map height.
+** Input: const QString &text - The new text entered by the user in the QLineEdit.
+** Output: None
+** Return: None
+** Others: Converts the text to a float representing the map height. If the conversion is
+**         successful, it updates the vertical range of the plot's yAxis. The plot is then
+**         replotted to reflect the changes. If the conversion fails, it indicates an invalid
+**         input.
+*************************************************/
+void PathPlanning_Platform::UdMapHight(const QString &text)
+{
+    bool ok;
+    float value = text.toFloat(&ok);
+    if (ok) {
+        // Successfully converted text to float, indicating a valid map height
+        // Update the vertical range of the plot's yAxis to the new map height
+        MapPlot->yAxis->setRange(0, value);
+        // Repaint the plot with the updated range
+        MapPlot->replot();
+    } else {
+        // Conversion failed, handle invalid input (e.g., display an error message)
+        // ui->output_txt->setText("Invalid input for MapHeight"); // Uncomment to show error
+    }
+}
+
+
+/*************************************************
+**Function:
+**Description: obs_nums_get button
+**获取UI的obs_nums_txt障碍物数量
+**在output_txt框中，显示障碍物数量
+**设置 obs_input_table 表格的行数
+**注意 obs_input_table的列和列标题的设定在Initialize_Plot函数，可以搜索setHorizontalHeaderLabels找到
+**Input:
+**Output:
+**Return:
+**Others:
+*************************************************/
+void PathPlanning_Platform::on_obs_nums_get_clicked()
 {
     // get the nums of obstacles
     obs_nums = ui->obs_nums_txt->value();
@@ -169,17 +240,17 @@ void PathPlanning_Platform::on_obs_data_get_clicked()
     // set the header name
     // ui->obs_input_table->setHorizontalHeaderLabels(QStringList()<<"obs_x"<<"obs_y"<<"obs_size");
 
-    // set the row
+    // set the obs table row/ 根据障碍物数量设置表格的行数
     ui->obs_input_table->setRowCount(obs_nums);
-
 
 
 }
 /*************************************************
 **Function: Obstacles info input getting
 **Description:
-**Input: Obs_Info_get -- button clicked
-**obs_nums -- obstacles numbers -- from on_obs_data_get_clicked()
+**Input:
+**Obs_Info_get -- button clicked
+**obs_nums -- obstacles numbers -- from on_obs_nums_get_clicked()
 **Output: obs_info -- all obstacles infos in global
 **Return:
 **Others: 这里得做个安全处理，如果nums有值，table没有值/ nums设定值大于 table输入的行数，QT会直接crashed！
@@ -273,105 +344,62 @@ void PathPlanning_Platform::Obs_Plot(double obs_x, double obs_y, double obs_size
     MapPlot->replot();
 }
 
-
+// 20240625此处原本就是空白，暂时忘了想要做什么的
 void PathPlanning_Platform::Obs_Plot_Format(){
 
 }
 
-/*************************************************
-** Function: UdMapWight
-** Description: Slot function to handle changes in the MapWeight QLineEdit widget.
-**              It updates the horizontal range of the plot to match the new map width.
-** Input: const QString &text - The new text entered by the user in the QLineEdit.
-** Output: None
-** Return: None
-** Others: Converts the text to a float representing the map width. If the conversion is
-**         successful, it updates the horizontal range of the plot's xAxis. The plot is then
-**         replotted to reflect the changes. If the conversion fails, it indicates an invalid
-**         input.
-*************************************************/
-void PathPlanning_Platform::UdMapWight(const QString &text)
-{
-    bool ok;
-    float value = text.toFloat(&ok);
-    if (ok) {
-        // Successfully converted text to float, indicating a valid map width
-        // Update the horizontal range of the plot's xAxis to the new map width
-        MapPlot->xAxis->setRange(0, value);
-        // Repaint the plot with the updated range
-        MapPlot->replot();
-    } else {
-        // Conversion failed, handle invalid input (e.g., display an error message)
-        // ui->output_txt->setText("Invalid input for MapWeight"); // Uncomment to show error
-    }
-}
 
-/*************************************************
-** Function: UdMapHight
-** Description: Slot function to handle changes in the MapHeight QLineEdit widget.
-**              It updates the vertical range of the plot to match the new map height.
-** Input: const QString &text - The new text entered by the user in the QLineEdit.
-** Output: None
-** Return: None
-** Others: Converts the text to a float representing the map height. If the conversion is
-**         successful, it updates the vertical range of the plot's yAxis. The plot is then
-**         replotted to reflect the changes. If the conversion fails, it indicates an invalid
-**         input.
-*************************************************/
-void PathPlanning_Platform::UdMapHight(const QString &text)
-{
-    bool ok;
-    float value = text.toFloat(&ok);
-    if (ok) {
-        // Successfully converted text to float, indicating a valid map height
-        // Update the vertical range of the plot's yAxis to the new map height
-        MapPlot->yAxis->setRange(0, value);
-        // Repaint the plot with the updated range
-        MapPlot->replot();
-    } else {
-        // Conversion failed, handle invalid input (e.g., display an error message)
-        // ui->output_txt->setText("Invalid input for MapHeight"); // Uncomment to show error
-    }
-}
 
-void PathPlanning_Platform::on_ObsRndGen_clicked()
+void PathPlanning_Platform::on_Obs_RndGen_clicked()
 {
+    // 清除之前的障碍物信息
     obs_info.clear();
-    ui->obs_input_table->clearContents();
-    ui->obs_input_table->setRowCount(obs_nums);
+    ui->obs_input_table->clearContents(); // 清除表格之前的内容
+    ui->obs_input_table->setRowCount(obs_nums); // obs_nums设定一遍，其实这一步可以注释，但为了保险
 
-    // 获取最新的 MapWeight 和 MapHeight 值
+    // 从页面中获取最新的 MapWeight 和 MapHeight 值
     const double mapWidth = ui->MapWeight->text().toDouble();
     const double mapHeight = ui->MapHeight->text().toDouble();
+    cout <<"width"<< mapWidth << endl;
+    cout <<"height"<< mapHeight << endl;
+
+    // 设置障碍物的最小距离、最小尺寸和最大尺寸
     const double minDistance = 0.5; // 最小距离，确保障碍物不重叠
     const double minSize = 0.2;
     const double maxSize = 1.5;
 
+    // 获取全局随机数生成器
     QRandomGenerator *generator = QRandomGenerator::global();
-    QVector<QRectF> generatedObstacles;
+    QVector<QRectF> generatedObstacles; // 用于存储已生成的障碍物
 
     for (int i = 0; i < obs_nums; ++i)
     {
         double obs_x, obs_y, obs_size;
         bool validPosition = false;
-        QRectF newObstacle; // 声明变量在外部作用域
+        QRectF newObstacle; // 用于表示二维空间内的矩形
 
+// 循环直到找到一个有效的障碍物位置
         while (!validPosition)
         {
-            // validPosition = false，则会一直在这里循环，指导找到满足条件的obs
+//            validPosition = false，则会一直在这里循环，指导找到满足条件的obs
 //            obs_x = generator->bounded(mapWidth);
 //            obs_y = generator->bounded(mapHeight);
+//            随机生成障碍物的尺寸
             obs_size = minSize + generator->bounded(maxSize - minSize);
-            obs_x = generator->bounded(mapWidth - obs_size) + obs_size / 2;
-            obs_y = generator->bounded(mapHeight - obs_size) + obs_size / 2;
+            // 随机生成障碍物的中心位置，确保障碍物完全位于地图内部
+            // 其实生成到哪都无所谓，最重要的是检测
+            obs_x = generator->bounded(mapWidth - obs_size) + obs_size;
+            obs_y = generator->bounded(mapHeight - obs_size) + obs_size;
 
-
+//          根据中心点和尺寸计算障碍物的边界
+//          QRectF(矩形左上角点的x，矩形左上角点的x，宽度，高度)
             newObstacle = QRectF(obs_x - obs_size / 2, obs_y - obs_size / 2, obs_size, obs_size);
-
+//          此时就假设找到的位置是有效的？
             validPosition = true;
 
             // 检查障碍物是否在地图边界内
-            if (newObstacle.left() < 0 || newObstacle.top() < 0 || newObstacle.right() > mapWidth || newObstacle.bottom() > mapHeight)
+            if (newObstacle.left() <0 || newObstacle.top() > mapHeight || newObstacle.right() > mapWidth || newObstacle.bottom() < 0)
             {
                 validPosition = false;
                 continue;
@@ -391,10 +419,10 @@ void PathPlanning_Platform::on_ObsRndGen_clicked()
         generatedObstacles.append(newObstacle);
         obs_info.push_back({obs_x, obs_y, obs_size});
 
+        // 将数据输入table里
         QTableWidgetItem *itemX = new QTableWidgetItem(QString::number(obs_x));
         QTableWidgetItem *itemY = new QTableWidgetItem(QString::number(obs_y));
         QTableWidgetItem *itemSize = new QTableWidgetItem(QString::number(obs_size));
-
         ui->obs_input_table->setItem(i, 0, itemX);
         ui->obs_input_table->setItem(i, 1, itemY);
         ui->obs_input_table->setItem(i, 2, itemSize);
